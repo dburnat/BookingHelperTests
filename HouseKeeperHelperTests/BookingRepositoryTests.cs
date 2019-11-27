@@ -61,18 +61,18 @@ namespace BookingHelper
             Assert.That(result, Is.Empty);
         }
         [Test]
-        public void BookingFinishesDuringExistingBooking_ReturnsEx()
+        public void BookingFinishesDuringExistingBooking_ReturnsFirstRef()
         {
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
-                Id=2,
+                Id=1,
                 ArrivalDate = Before(_existingBooking.ArrivalDate, days:2),
                 DepartureDate = Before(_existingBooking.DepartureDate, days: 1),
                 Reference = "ex"
                 
             }, _repository.Object);
 
-            Assert.That(result, _existingBooking.Reference);
+            Assert.That(result, Is.Empty);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace BookingHelper
         {
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
-                Id = 2,
+                Id = 1,
                 ArrivalDate = After(_existingBooking.ArrivalDate, days:1),
                 DepartureDate = After(_existingBooking.DepartureDate, days: 1),
                 Reference = "starts"
@@ -91,18 +91,18 @@ namespace BookingHelper
         }
 
         [Test]
-        public void BookingStartsBeforeExistingBookingAndFinishesAfter_ReturnsBeforeAfter()
+        public void BookingStartsBeforeExistingBookingAndFinishesAfter_ReturnsFirstRef()
         {
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
-                Id = 2,
+                Id = 1,
                 ArrivalDate = Before(_existingBooking.ArrivalDate, days: 1),
                 DepartureDate = After(_existingBooking.DepartureDate, days: 1),
                 Reference = "beforeafter"
 
             }, _repository.Object);
 
-            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.EqualTo(_existingBooking.Reference));
         }
     }
 }
