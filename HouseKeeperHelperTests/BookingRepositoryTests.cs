@@ -17,7 +17,7 @@ namespace BookingHelper
             _existingBooking = new Booking
             {
                 Id = 50,
-                ArrivalDate = ArriveOn(2019,11,2),
+                ArrivalDate = ArriveOn(2019,11,5),
                 DepartureDate = DepartOn(2019,11,10),
                 Reference = "firstRef",
             };
@@ -46,7 +46,8 @@ namespace BookingHelper
         private DateTime DepartOn(int year, int month, int day)
         {
             return new DateTime(year, month, day, 10, 0, 0);
-        }
+        }
+
 
         [Test]
         public void BookingStartsAndFinishesBeforeAnExistingBooking_ReturnEmptyString()
@@ -61,33 +62,33 @@ namespace BookingHelper
             Assert.That(result, Is.Empty);
         }
         [Test]
-        public void BookingFinishesDuringExistingBooking_ReturnsFirstRef()
+        public void BookingStartsBeforeAndFinishesDuringExistingBooking_ReturnsFirstRef()
         {
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
                 Id=1,
                 ArrivalDate = Before(_existingBooking.ArrivalDate, days:2),
-                DepartureDate = Before(_existingBooking.DepartureDate, days: 1),
+                DepartureDate = _existingBooking.DepartureDate,
                 Reference = "ex"
                 
             }, _repository.Object);
 
-            Assert.That(result, Is.Empty);
+            Assert.That(result,  Is.EqualTo(_existingBooking.Reference));
         }
 
         [Test]
-        public void BookingStartsDuringExistingBooking_ReturnsStarts()
+        public void BookingStartsDuringExistingBookingAndFinishesAfter_ReturnsFirstRef()
         {
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
                 Id = 1,
-                ArrivalDate = After(_existingBooking.ArrivalDate, days:1),
-                DepartureDate = After(_existingBooking.DepartureDate, days: 1),
+                ArrivalDate = _existingBooking.ArrivalDate,
+                DepartureDate = After(_existingBooking.DepartureDate),
                 Reference = "starts"
 
             }, _repository.Object);
 
-            Assert.That(result, Is.Empty);
+            Assert.That(result, Is.EqualTo(_existingBooking.Reference));
         }
 
         [Test]
@@ -96,13 +97,56 @@ namespace BookingHelper
             var result = BookingHelper.OverlappingBookingsExist(new Booking
             {
                 Id = 1,
-                ArrivalDate = Before(_existingBooking.ArrivalDate, days: 1),
-                DepartureDate = After(_existingBooking.DepartureDate, days: 1),
+                ArrivalDate = Before(_existingBooking.ArrivalDate),
+                DepartureDate = After(_existingBooking.DepartureDate),
                 Reference = "beforeafter"
 
             }, _repository.Object);
 
             Assert.That(result, Is.EqualTo(_existingBooking.Reference));
+        }
+        
+        [Test]
+        public void BookingStartsAfterExistingBooking_ReturnsEmptyString()
+        {
+            var result = BookingHelper.OverlappingBookingsExist(new Booking
+            {
+                Id = 1,
+                ArrivalDate = After(_existingBooking.DepartureDate,2),
+                DepartureDate = After(_existingBooking.DepartureDate, 3),
+                Reference = "after"
+
+            }, _repository.Object);
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void BookingStartsDuringAndFinishesBeforeExistingBooking_ReturnsFirstRef()
+        {
+            var result = BookingHelper.OverlappingBookingsExist(new Booking
+            {
+                Id = 1,
+                ArrivalDate = After(_existingBooking.ArrivalDate),
+                DepartureDate = Before(_existingBooking.DepartureDate)
+
+            }, _repository.Object);
+            
+            Assert.That(result, Is.EqualTo(_existingBooking.Reference));
+        }
+
+        [Test]
+        public void BookingStartsAndFinishesDuringExistingBooking_ReturnsFirstRef()
+        {
+            var result = BookingHelper.OverlappingBookingsExist(new Booking
+            {
+                Id = 1,
+                ArrivalDate = _existingBooking.ArrivalDate,
+                DepartureDate = _existingBooking.DepartureDate,
+                Reference = "same"
+            }, _repository.Object);
+            
+            Assert.That(result, Is.EqualTo( _existingBooking.Reference));
         }
     }
 }
