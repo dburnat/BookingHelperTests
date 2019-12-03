@@ -18,8 +18,7 @@ namespace BookingHelper
             var overlappingBooking =
                 bookings.FirstOrDefault(
                 b =>
-                booking.ArrivalDate >= b.ArrivalDate && booking.ArrivalDate < b.DepartureDate
-                || booking.DepartureDate > b.ArrivalDate && booking.DepartureDate <= b.DepartureDate);
+                booking.DepartureDate >= b.ArrivalDate && booking.ArrivalDate < b.DepartureDate || booking.DepartureDate > b.ArrivalDate && booking.DepartureDate <= b.DepartureDate);
 
             return overlappingBooking == null ? string.Empty : overlappingBooking.Reference;
         }
