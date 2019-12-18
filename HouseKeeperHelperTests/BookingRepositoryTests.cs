@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace BookingHelper
 {
+    //verify
     public class BookingHelper_OverlappingBookingsExistTests
     {
         private Mock<IBookingRepository> _repository;
