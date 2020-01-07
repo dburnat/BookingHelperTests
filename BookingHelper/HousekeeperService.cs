@@ -63,178 +63,71 @@ namespace BookingHelper
             return true;
         }
 
-        //private static string SaveStatement(int housekeeperOid, string housekeeperName, DateTime statementDate)
-        //{
-        //    var report = new HousekeeperStatementReport(housekeeperOid, statementDate);
+    }
 
-        //    if (!report.HasData)
-        //        return string.Empty;
+    public enum MessageBoxButtons
+    {
+        OK
+    }
 
-        //    report.CreateDocument();
-
-        //    var filename = Path.Combine(
-        //        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-        //        string.Format("Sandpiper Statement {0:yyyy-MM} {1}.pdf", statementDate, housekeeperName));
-
-        //    report.ExportToPdf(filename);
-
-        //    return filename;
-        //}
-
-        //    private static void EmailFile(string emailAddress, string emailBody, string filename, string subject)
-        //    {
-        //        var client = new SmtpClient(SystemSettingsHelper.EmailSmtpHost)
-        //        {
-        //            Port = SystemSettingsHelper.EmailPort,
-        //            Credentials =
-        //                new NetworkCredential(
-        //                    SystemSettingsHelper.EmailUsername,
-        //                    SystemSettingsHelper.EmailPassword)
-        //        };
-
-        //        var from = new MailAddress(SystemSettingsHelper.EmailFromEmail, SystemSettingsHelper.EmailFromName,
-        //            Encoding.UTF8);
-        //        var to = new MailAddress(emailAddress);
-
-        //        var message = new MailMessage(from, to)
-        //        {
-        //            Subject = subject,
-        //            SubjectEncoding = Encoding.UTF8,
-        //            Body = emailBody,
-        //            BodyEncoding = Encoding.UTF8
-        //        };
-
-        //        message.Attachments.Add(new Attachment(filename));
-        //        client.Send(message);
-        //        message.Dispose();
-
-        //        File.Delete(filename);
-        //    }
-        //}
-
-        public enum MessageBoxButtons
+    public class XtraMessageBox : IXtraMessageBox
+    {
+        public void Show(string s, string housekeeperStatements, MessageBoxButtons ok)
         {
-            OK
+        }
+    }
+
+    public class MainForm
+    {
+        public bool HousekeeperStatementsSending { get; set; }
+    }
+
+    public class DateForm
+    {
+        public DateForm(string statementDate, object endOfLastMonth)
+        {
         }
 
-        public class XtraMessageBox : IXtraMessageBox
+        public DateTime Date { get; set; }
+
+        public DialogResult ShowDialog()
         {
-            public void Show(string s, string housekeeperStatements, MessageBoxButtons ok)
-            {
-            }
+            return DialogResult.Abort;
+        }
+    }
+
+    public enum DialogResult
+    {
+        Abort,
+        OK
+    }
+
+    public class SystemSettingsHelper
+    {
+        public static string EmailSmtpHost { get; set; }
+        public static int EmailPort { get; set; }
+        public static string EmailUsername { get; set; }
+        public static string EmailPassword { get; set; }
+        public static string EmailFromEmail { get; set; }
+        public static string EmailFromName { get; set; }
+    }
+
+
+
+    public class HousekeeperStatementReport
+    {
+        public HousekeeperStatementReport(int housekeeperOid, DateTime statementDate)
+        {
         }
 
-        public class MainForm
+        public bool HasData { get; set; }
+
+        public void CreateDocument()
         {
-            public bool HousekeeperStatementsSending { get; set; }
         }
 
-        public class DateForm
+        public void ExportToPdf(string filename)
         {
-            public DateForm(string statementDate, object endOfLastMonth)
-            {
-            }
-
-            public DateTime Date { get; set; }
-
-            public DialogResult ShowDialog()
-            {
-                return DialogResult.Abort;
-            }
-        }
-
-        public enum DialogResult
-        {
-            Abort,
-            OK
-        }
-
-        public class SystemSettingsHelper
-        {
-            public static string EmailSmtpHost { get; set; }
-            public static int EmailPort { get; set; }
-            public static string EmailUsername { get; set; }
-            public static string EmailPassword { get; set; }
-            public static string EmailFromEmail { get; set; }
-            public static string EmailFromName { get; set; }
-        }
-
-        public class Housekeeper
-        {
-            public string Email { get; set; }
-            public int Oid { get; set; }
-            public string FullName { get; set; }
-            public string StatementEmailBody { get; set; }
-        }
-
-        public class HousekeeperStatementReport
-        {
-            public HousekeeperStatementReport(int housekeeperOid, DateTime statementDate)
-            {
-            }
-
-            public bool HasData { get; set; }
-
-            public void CreateDocument()
-            {
-            }
-
-            public void ExportToPdf(string filename)
-            {
-            }
-        }
-
-        public class EmailSender : IEmailSender
-        {
-            public void EmailFile(string emailAddress, string emailBody, string filename, string subject)
-            {
-                var client = new SmtpClient(SystemSettingsHelper.EmailSmtpHost)
-                {
-                    Port = SystemSettingsHelper.EmailPort,
-                    Credentials =
-                        new NetworkCredential(
-                            SystemSettingsHelper.EmailUsername,
-                            SystemSettingsHelper.EmailPassword)
-                };
-
-                var from = new MailAddress(SystemSettingsHelper.EmailFromEmail, SystemSettingsHelper.EmailFromName,
-                    Encoding.UTF8);
-                var to = new MailAddress(emailAddress);
-
-                var message = new MailMessage(from, to)
-                {
-                    Subject = subject,
-                    SubjectEncoding = Encoding.UTF8,
-                    Body = emailBody,
-                    BodyEncoding = Encoding.UTF8
-                };
-
-                message.Attachments.Add(new Attachment(filename));
-                client.Send(message);
-                message.Dispose();
-
-                File.Delete(filename);
-            }
-        }
-        public class StatementGenerator : IStatementGenerator
-        {
-            public string SaveStatement(int housekeeperOid, string housekeeperName, DateTime statementDate)
-            {
-                var report = new HousekeeperStatementReport(housekeeperOid, statementDate);
-
-                if (!report.HasData)
-                    return string.Empty;
-
-                report.CreateDocument();
-
-                var filename = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
-                    string.Format("Sandpiper Statement {0:yyyy-MM} {1}.pdf", statementDate, housekeeperName));
-
-                report.ExportToPdf(filename);
-
-                return filename;
-            }
         }
     }
 }
