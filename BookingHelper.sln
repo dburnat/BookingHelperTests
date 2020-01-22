@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookingHelper", "BookingHelper\BookingHelper.csproj", "{370857A9-AE66-4A10-A1A1-663299F09186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookingHelper", "BookingHelper\BookingHelper.csproj", "{370857A9-AE66-4A10-A1A1-663299F09186}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HouseKeeperHelperTests", "HouseKeeperHelperTests\HouseKeeperHelperTests.csproj", "{40188FC4-400B-46BB-9FAF-3C1D6CA07AF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HouseKeeperHelperTests", "HouseKeeperHelperTests\HouseKeeperHelperTests.csproj", "{40188FC4-400B-46BB-9FAF-3C1D6CA07AF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeleniumTests", "SeleniumTests\SeleniumTests.csproj", "{E6AEDC90-1C43-4B02-B4FB-1FFFE0AC3420}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{40188FC4-400B-46BB-9FAF-3C1D6CA07AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40188FC4-400B-46BB-9FAF-3C1D6CA07AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40188FC4-400B-46BB-9FAF-3C1D6CA07AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6AEDC90-1C43-4B02-B4FB-1FFFE0AC3420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6AEDC90-1C43-4B02-B4FB-1FFFE0AC3420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6AEDC90-1C43-4B02-B4FB-1FFFE0AC3420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6AEDC90-1C43-4B02-B4FB-1FFFE0AC3420}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
